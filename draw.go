@@ -6,6 +6,7 @@ import (
 	"log"
 )
 
+// Draw font glyphs onto an image
 type Draw struct {
 	// Dst is the destination image
 	Dst draw.Image

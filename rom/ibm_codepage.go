@@ -5,12 +5,12 @@ import (
 	"regexp"
 )
 
-var topaz = regexp.MustCompile(`^amiga_topaz_\w+$`)
+var cpxxx = regexp.MustCompile(`^ibm_codepage_\d+(:?|-\dx\d+)$`)
 
 func init() {
 	ROMs = append(ROMs, &Collection{
 		Match: func(name string) bool {
-			return topaz.MatchString(filepath.Base(name))
+			return cpxxx.MatchString(filepath.Base(name))
 		},
 		Parse: ReadMap,
 	})

@@ -1,3 +1,4 @@
+// Command to dump a font to PNG
 package main
 
 import (
@@ -12,13 +13,16 @@ import (
 	"strings"
 
 	"textmod.es/font"
+	"textmod.es/font/rom/amiga"
+	"textmod.es/font/rom/ibm"
+	"textmod.es/font/rom/mullard"
 )
 
 var fonts = map[string]font.Font{
-	"cp437":  font.CodePage437,
-	"mode7":  font.MullardSAA5050,
-	"topaz":  font.AmigaTopazA500,
-	"topaz2": font.AmigaTopazA1200,
+	"cp437":  ibm.Codepage437,
+	"mode7":  mullard.SAA5050,
+	"topaz":  amiga.TopazA500,
+	"topaz2": amiga.TopazA1200,
 	//"topazplus":  font.AmigaTopazplusA500,
 	//"topaz2plus": font.AmigaTopazplusA1200,
 }

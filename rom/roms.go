@@ -1,3 +1,7 @@
+// Package rom contains tools to convert character ROMS to Go source files
+//
+// This package is mainly for internal use in textmod.es/font/gen.go, used by
+// "go generate" in the containing package.
 package rom
 
 import (
@@ -34,10 +38,24 @@ type Map struct {
 	Data        []uint16
 }
 
-func (m *Map) ExportName() string {
-	var part = strings.Split(m.Name, "_")
+func (m *Map) FontName() string {
+	var part = strings.Split(strings.Split(m.Name, "-")[0], "_")
 	for i, s := range part {
 		part[i] = strings.Title(s)
+	}
+	if len(part) > 1 {
+		return strings.Join(part[1:], "")
+	}
+	return strings.Join(part, "")
+}
+
+func (m *Map) ExportName() string {
+	var part = strings.Split(strings.Replace(m.Name, "-", "_", -1), "_")
+	for i, s := range part {
+		part[i] = strings.Title(s)
+	}
+	if len(part) > 1 {
+		return strings.Join(part[1:], "")
 	}
 	return strings.Join(part, "")
 }
@@ -45,6 +63,19 @@ func (m *Map) ExportName() string {
 func (m *Map) InternalName() string {
 	name := m.ExportName()
 	return strings.ToLower(string(name[0])) + name[1:]
+}
+
+func (m *Map) PackageFile() string {
+	var part = strings.Split(strings.Replace(strings.ToLower(m.Name), "-", "_", -1), "_")
+	return filepath.Join("rom", part[0], strings.Join(part[1:], "_")+".go")
+}
+
+func (m *Map) FacePackageFile() string {
+	var (
+		part = strings.Split(strings.Replace(strings.ToLower(m.Name), "-", "_", -1), "_")
+		size = len(part)
+	)
+	return filepath.Join("rom", part[0], strings.Join(part[1:size-1], "_")+".go")
 }
 
 func (m *Map) ROMSize() int64 {
